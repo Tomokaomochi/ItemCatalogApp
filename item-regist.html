@@ -115,9 +115,21 @@
 
 
       function addData() {
-        // IDの入力チェック
+        // 各入力フィールドから値を取得
         const ID = document.getElementById('ID').value;
-        if (!ID || isNaN(ID) || !Name || typeof Name !== 'string' || !Color || typeof Color !== 'string' || !Price || isNaN(Price) || !Category || typeof Category !== 'string' || !Stock || isNaN(Stock)) {
+        const Name = document.getElementById('Name').value;
+        const Color = document.getElementById('Color').value;
+        const Price = document.getElementById('Price').value;
+        const Category = document.getElementById('Category').value;
+        const Stock = document.getElementById('Stock').value;
+
+        // 各入力値の検証
+        if (!ID || isNaN(ID) ||
+            !Name || typeof Name !== 'string' ||
+            !Color || typeof Color !== 'string' ||
+            !Price || isNaN(Price) ||
+            !Category || typeof Category !== 'string' ||
+            !Stock || isNaN(Stock)) {
             alert("未入力の項目があります");
             return;
         }
@@ -125,11 +137,11 @@
         // POSTメソッドで送るパラメーターを作成
         const param = {
             ID: ID,
-            Name: document.getElementById('Name').value,
-            Color: document.getElementById('Color').value,
-            Price: document.getElementById('Price').value,
-            Category: document.getElementById('Category').value,
-            Stock: document.getElementById('Stock').value
+            Name: Name,
+            Color: Color,
+            Price: Price,
+            Category: Category,
+            Stock: Stock
         };
 
         // API呼び出し
@@ -150,6 +162,7 @@
             console.error('Error adding data:', error);
         });
       }
+
 
 
       window.onscroll = function() {
