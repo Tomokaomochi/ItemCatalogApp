@@ -23,7 +23,7 @@
           <input type="text" id="Name" placeholder="Name…" />
           <input type="text" id="Color" placeholder="Color…" />
           <input type="text" id="Price" placeholder="Price…" />
-          <input type="text" id="Category" placeholder="Category">
+          <input type="text" id="Category" placeholder="Category…">
           <!-- <select class="Category">
             <option value="" disabled selected>Select Category…<i class="fa-solid fa-caret-down"></i></option>
             <option value="コート" class="selected">コート</option>
@@ -51,7 +51,7 @@
           <button class="btn regist-btn" onclick="addData()">Regist</button>
           <button class="btn update-data-btn" onclick="readData()"><i class="fa-solid fa-arrow-rotate-right"></i></button>
         </div>
-        <div class="output-row" id="output">
+        <div class="table-container">
           <table id="itemTable" border="1" cellspacing="0" cellpadding="5">
             <thead id="tableHead">
               <!-- ヘッダーここに追加 -->
@@ -59,7 +59,7 @@
             <tbody id="tableBody">
               <!-- データ行ここに追加 -->
             </tbody>
-          </table>
+          </table>      
         </div>
         <div class="backToTop">
         <button id="backToTop" class="btn backToTop-btn"><i class="fa-solid fa-arrow-up"></i> Top</button>

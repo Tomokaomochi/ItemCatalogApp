@@ -34,6 +34,23 @@ body {
 .header__left {
   padding-bottom: 15px;
 }
+.table-container {
+  border-radius: 4px;
+  overflow: hidden;
+}
+#itemTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+#itemTable th, #itemTable td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: left;
+  width: auto;
+}
+#itemTable th {
+  background-color: #D99AAD;
+}
 .input-row, .output-row {
   margin-bottom: 20px;
 }
@@ -91,19 +108,6 @@ body {
   display: flex;
   justify-content: center;
   gap: 10px;
-}
-#itemTable {
-  width: 100%;
-  border-collapse: collapse;
-}
-#itemTable th, #itemTable td {
-  padding: 8px;
-  border: 1px solid #ddd;
-  text-align: left;
-  width: auto;
-}
-#itemTable th {
-  background-color: #D99AAD;
 }
 #backToTop {
   float: right;
