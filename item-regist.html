@@ -4,44 +4,121 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Item-Stock</title>
-  <!-- Vuetify CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.11/dist/vuetify.min.css" rel="stylesheet">
-  <!-- Vue.js -->
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
-  <!-- Vuetify -->
-  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.6.11/dist/vuetify.js"></script>
-  <!-- Axios -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=League+Script&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" type="text/css" href="stock.css">
   <title>Item Regist</title>
 </head>
 <body>
     <div class="container">
+        <div class="header__left">
+          <button onclick="window.location.href = 'item-stock.html';"><i class="fa fa-arrow-left"></i>BackPage</button>
+        </div>
         <div class="header">Item Regist</div>
         <div class="input-row">
           <input type="text" id="ID" placeholder="ID…" />
           <input type="text" id="Name" placeholder="Name…" />
           <input type="text" id="Color" placeholder="Color…" />
           <input type="text" id="Price" placeholder="Price…" />
-          <input type="text" id="Category" placeholder="Category…" />
+          <input type="text" id="Category" placeholder="Category">
+          <!-- <select class="Category">
+            <option value="" disabled selected>Select Category…<i class="fa-solid fa-caret-down"></i></option>
+            <option value="コート" class="selected">コート</option>
+            <option value="ジャケット・ブルゾン" class="selected">ジャケット・ブルゾン</option>
+            <option value="Tシャツ・カットソー" class="selected">Tシャツ・カットソー</option>
+            <option value="シャツ・ブラウス" class="selected">シャツ・ブラウス</option>
+            <option value="ニット" class="selected">ニット</option>
+            <option value="カーディガン" class="selected">カーディガン</option>
+            <option value="パンツ" class="selected">パンツ</option>
+            <option value="スカート" class="selected">スカート</option>
+            <option value="ワンピース" class="selected">ワンピース</option>
+            <option value="サンダル" class="selected">サンダル</option>
+            <option value="スニーカー" class="selected">スニーカー</option>
+            <option value="パンプス" class="selected">パンプス</option>
+            <option value="ブーツ" class="selected">ブーツ</option>
+            <option value="バッグ" class="selected">バッグ</option>
+            <option value="帽子" class="selected">帽子</option>
+            <option value="アクセサリー" class="selected">アクセサリー</option>
+            <option value="その他の小物" class="selected">その他の小物</option>
+          </select> -->
           <input type="text" id="Stock" placeholder="Stock…" />
         </div>
         <div class="btn-container">
+          <button class="btn item-list-btn" onclick="readData()">Itemlist</button>
           <button class="btn regist-btn" onclick="addData()">Regist</button>
+          <button class="btn update-data-btn" onclick="readData()"><i class="fa-solid fa-arrow-rotate-right"></i></button>
         </div>
         <div class="output-row" id="output">
-          <!-- データの出力部分 -->
+          <table id="itemTable" border="1" cellspacing="0" cellpadding="5">
+            <thead id="tableHead">
+              <!-- ヘッダーここに追加 -->
+            </thead>
+            <tbody id="tableBody">
+              <!-- データ行ここに追加 -->
+            </tbody>
+          </table>
         </div>
-      </div>
+        <div class="backToTop">
+        <button id="backToTop" class="btn backToTop-btn"><i class="fa-solid fa-arrow-up"></i> Top</button>
+        </div>
+    </div>
+
+
 
     <script>
-        function addData() {
-        // IDの入力チェック（空白か数字以外なら終了）
+      function readData() {
+        axios.get('https://m3h-mizutani-itemcatalogapi.azurewebsites.net/api/SELECT')
+          .then(response => {
+            const data = response.data;
+            const tableHead = document.getElementById('tableHead');
+            const tableBody = document.getElementById('tableBody');
+
+            // テーブルヘッダーをクリア
+            tableHead.innerHTML = '';
+            
+            // テーブルヘッダーを動的に追加
+            const headerRow = document.createElement('tr');
+            headerRow.innerHTML = `
+              <th>ID</th>
+              <th>Name</th>
+              <th>Color</th>
+              <th>Price</th>
+              <th>Category</th>
+              <th>Stock</th>
+            `;
+            tableHead.appendChild(headerRow);
+
+            // テーブルボディをクリア
+            tableBody.innerHTML = '';
+
+            // データをテーブル行に追加
+            data.List.forEach(item => {
+              const itemRow = document.createElement('tr');
+              itemRow.innerHTML = `
+                <td>${item.ID}</td>
+                <td>${item.Name}</td>
+                <td>${item.Color}</td>
+                <td>${item.Price}</td>
+                <td>${item.Category}</td>
+                <td>${item.Stock}</td>
+              `;
+              tableBody.appendChild(itemRow);
+            });
+          })
+          .catch(error => {
+            console.error('Error reading data:', error);
+          });
+      }
+
+
+      function addData() {
+        // IDの入力チェック
         const ID = document.getElementById('ID').value;
-        if (!ID || isNaN(ID)) {
-            console.log("IDに数値が入力されていません");
+        if (!ID || isNaN(ID) || !Name || typeof Name !== 'string' || !Color || typeof Color !== 'string' || !Price || isNaN(Price) || !Category || typeof Category !== 'string' || !Stock || isNaN(Stock)) {
+            alert("未入力の項目があります");
             return;
         }
 
@@ -56,17 +133,37 @@
         };
 
         // API呼び出し
-        fetch('https://m3h-mizutani-itemcatalogapi.azurewebsites.net/api/INSERT', {
-            method: 'POST',
+        axios.post('https://m3h-mizutani-itemcatalogapi.azurewebsites.net/api/INSERT', param, {
             headers: {
-            'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(param)
+                'Content-Type': 'application/json'
+            }
         })
-        .then(response => response.json())
-        .then(data => console.log(data))
-        .catch(error => console.error('Error adding data:', error));
+        .then(response => {
+            if (response.status === 200) {
+                alert("Itemが正常に登録されました");
+            } else {
+                alert("Itemの登録に失敗しました");
+            }
+            console.log(response.data); // レスポンスデータをコンソールに表示
+        })
+        .catch(error => {
+            console.error('Error adding data:', error);
+        });
+      }
+
+
+      window.onscroll = function() {
+        var backToTopButton = document.getElementById("backToTop");
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+          backToTopButton.style.display = "block";
+        } else {
+          backToTopButton.style.display = "none";
         }
+      };
+
+      document.getElementById("backToTop").onclick = function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
 
     </script>
 </body>

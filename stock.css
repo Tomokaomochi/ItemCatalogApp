@@ -31,15 +31,22 @@ body {
   font-weight: bold;
   border-radius: 8px;
 }
+.header__left {
+  padding-bottom: 15px;
+}
 .input-row, .output-row {
   margin-bottom: 20px;
 }
-.input-row input {
+.input-row input,
+.input-row select {
   background-color: #FFF6EE;
   border: 1px solid #ddd;
   padding: 10px;
   border-radius: 4px;
   width: 100%;
+}
+.Category {
+  color: gray;
 }
 .btn {
   border: none;
@@ -50,6 +57,9 @@ body {
   font-weight: bold;
   margin-bottom: 40px;
 }
+.btn:hover {
+  background-color: #ce93a4;
+}
 .regist-btn {
   color: #664B4F;
   background-color: #D99AAD;
@@ -58,7 +68,22 @@ body {
   color: #D99AAD;
   background-color: #664B4F;
 }
+.item-list-btn:hover {
+  background-color: #4b383b;
+}
 .edit-btn {
+  color: #664B4F;
+  background-color: #D99AAD;
+}
+.search-btn {
+  color: #664B4F;
+  background-color: #D99AAD;
+}
+.update-data-btn {
+  color: #664B4F;
+  background-color: #D99AAD;
+}
+.backToTop-btn {
   color: #664B4F;
   background-color: #D99AAD;
 }
@@ -66,4 +91,34 @@ body {
   display: flex;
   justify-content: center;
   gap: 10px;
+}
+#itemTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+#itemTable th, #itemTable td {
+  padding: 8px;
+  border: 1px solid #ddd;
+  text-align: left;
+  width: auto;
+}
+#itemTable th {
+  background-color: #D99AAD;
+}
+#backToTop {
+  float: right;
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+  background-color: #D99AAD;
+  color: #664B4F;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#backToTop:hover {
+  background-color: #ce93a4;
 }

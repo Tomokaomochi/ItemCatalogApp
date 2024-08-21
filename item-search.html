@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item-Stock</title>
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.11/dist/vuetify.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=League+Script&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css" href="stock.css">
+  <title>Item Edit</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header__left">
+            <button onclick="window.location.href = 'item-stock.html';"><i class="fa fa-arrow-left"></i>BackPage</button>
+        </div>
+        <div class="header">Item Search</div>
+        <div class="input-row">
+            <label for="ID">Enter Item ID:</label>
+            <input type="text" id="ID" name="ID" placeholder="Enter ID">
+        </div>
+        <div class="btn-container">
+            <button class="btn search-btn" onclick="searchData()">Search</button>
+        </div>
+        <div class="output-row" id="output"></div>
+    </div>
+
+
+    <script>
+        function searchData() {
+            const ID = document.getElementById('ID').value;
+
+            if (!ID || isNaN(ID)) {
+                alert("IDを入力してください");
+                return;
+            }
+
+            // API呼び出し
+            axios.get(`https://m3h-mizutani-itemcatalogapi.azurewebsites.net/api/SEARCH`, {
+                params: { id: ID }
+            })
+            .then(response => {
+                const data = response.data;
+                const output = document.getElementById('output');
+                output.innerHTML = ''; // 既存の出力をクリア
+
+                if (data.ID) {
+                    output.innerHTML = `
+                        <p><strong>ID:</strong> ${data.ID}</p>
+                        <p><strong>Name:</strong> ${data.Name}</p>
+                        <p><strong>Color:</strong> ${data.Color}</p>
+                        <p><strong>Price:</strong> ${data.Price}</p>
+                        <p><strong>Category:</strong> ${data.Category}</p>
+                        <p><strong>Stock:</strong> ${data.Stock}</p>
+                    `;
+                } else {
+                    output.innerHTML = 'Item not found.';
+                }
+            })
+            .catch(error => {
+                console.error('Error updating data:', error);
+                alert("入力されたIDは存在しません");
+            });
+        }
+
+
+    </script>
+    
+</body>
+</html>

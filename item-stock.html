@@ -4,49 +4,101 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Item-Stock</title>
-  <!-- Vuetify CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.11/dist/vuetify.min.css" rel="stylesheet">
-  <!-- Vue.js -->
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js"></script>
-  <!-- Vuetify -->
-  <script src="https://cdn.jsdelivr.net/npm/vuetify@2.6.11/dist/vuetify.js"></script>
-  <!-- Axios -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=League+Script&family=Pinyon+Script&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link rel="stylesheet" type="text/css" href="stock.css">
 <title>Item Stock</title>
 </head>
 <body>
   <div class="container">
-    <div class="header">Item Stock</div>
+    <div class="header">Item Stock Management</div>
     
     <div class="btn-container">
       <button class="btn item-list-btn" onclick="readData()">Itemlist</button>
+      <button class="btn search-btn" onclick="window.location.href = 'item-search.html';">Search</button>
       <button class="btn regist-btn" onclick="window.location.href = 'item-regist.html';">Regist</button>
       <button class="btn edit-btn" onclick="window.location.href = 'item-edit.html';">Edit</button>
     </div>
+    
+    
     <div class="output-row" id="output">
-      <!-- データの出力部分 -->
+      <table id="itemTable" border="1" cellspacing="0" cellpadding="5">
+        <thead id="tableHead">
+          <!-- ヘッダーここに追加 -->
+        </thead>
+        <tbody id="tableBody">
+          <!-- データ行ここに追加 -->
+        </tbody>
+      </table>
+    </div>
+    
+    
+    <div class="backToTop">
+      <button id="backToTop" class="btn backToTop-btn"><i class="fa-solid fa-arrow-up"></i> Top</button>
     </div>
   </div>
 
   <script>
     function readData() {
-      // API呼び出し
-      fetch('https://m3h-mizutani-itemcatalogapi.azurewebsites.net/api/SELECT')
-      .then(response => response.json())
-      .then(data => {
-        const output = document.getElementById('output');
-        output.innerHTML = ''; // 既存の出力をクリア
-        data.List.forEach(item => {
-          const itemRow = document.createElement('div');
-          itemRow.textContent = `ID: ${item.ID}, Name: ${item.Name}, Color: ${item.Color}, Price: ${item.Price}, Category: ${item.Category}, Stock: ${item.Stock}`;
-          output.appendChild(itemRow);
+      axios.get('https://m3h-mizutani-itemcatalogapi.azurewebsites.net/api/SELECT')
+        .then(response => {
+          const data = response.data;
+          const tableHead = document.getElementById('tableHead');
+          const tableBody = document.getElementById('tableBody');
+
+          // テーブルヘッダーをクリア
+          tableHead.innerHTML = '';
+          
+          // テーブルヘッダーを動的に追加
+          const headerRow = document.createElement('tr');
+          headerRow.innerHTML = `
+            <th>ID</th>
+            <th>Name</th>
+            <th>Color</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Stock</th>
+          `;
+          tableHead.appendChild(headerRow);
+
+          // テーブルボディをクリア
+          tableBody.innerHTML = '';
+
+          // データをテーブル行に追加
+          data.List.forEach(item => {
+            const itemRow = document.createElement('tr');
+            itemRow.innerHTML = `
+              <td>${item.ID}</td>
+              <td>${item.Name}</td>
+              <td>${item.Color}</td>
+              <td>${item.Price}</td>
+              <td>${item.Category}</td>
+              <td>${item.Stock}</td>
+            `;
+            tableBody.appendChild(itemRow);
+          });
+        })
+        .catch(error => {
+          console.error('Error reading data:', error);
         });
-      })
-      .catch(error => console.error('Error reading data:', error));
     }
+
+    window.onscroll = function() {
+        var backToTopButton = document.getElementById("backToTop");
+        if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+          backToTopButton.style.display = "block";
+        } else {
+          backToTopButton.style.display = "none";
+        }
+    };
+
+    document.getElementById("backToTop").onclick = function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+
   </script>
 </body>
 </html>
